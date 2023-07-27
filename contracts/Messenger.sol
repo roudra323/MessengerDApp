@@ -34,7 +34,6 @@ contract Messenger {
     mapping(address => User) userList;
     mapping(bytes32 => Message[]) allMessages;
     mapping(bytes32 => friendRequ) requestInfo;
-    mapping(address => friendRequ[]) receivedRequest;
     mapping(address => friendRequ[]) sentRequest;
 
     /// @dev Checks if a user with the given address exists.
@@ -44,7 +43,7 @@ contract Messenger {
 
     /// @dev Creates a new user account with the provided name.
     function createAcc(string calldata _name) external {
-        require(checkUserExists(msg.sender) == false, "User is already exist.");
+        require(!checkUserExists(msg.sender), "User is already exist.");
         require(bytes(_name).length > 0, "User name can't be null");
         userList[msg.sender].name = _name;
         getAllUsers.push(AllUsers(_name, msg.sender));
@@ -52,7 +51,7 @@ contract Messenger {
 
     /// @dev Returns the name of the user associated with the given address.
     function getUserName(address _addr) external view returns (string memory) {
-        require(checkUserExists(msg.sender) == true, "User is not exist.");
+        require(checkUserExists(msg.sender), "User is not exist.");
         return userList[_addr].name;
     }
 
