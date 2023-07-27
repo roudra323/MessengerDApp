@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.10;
 
+/// @title Messenger - A simple contract to facilitate messaging between users.
 contract Messenger {
     struct User {
         string name;
@@ -77,6 +78,7 @@ contract Messenger {
         return false;
     }
 
+    /// @dev Sends a friend request to another user.
     function sendRequest(address friendAddr) external {
         bytes32 chatCode = _getChatCode(msg.sender, friendAddr);
         friendRequ memory newRequ = friendRequ(msg.sender, friendAddr, false);
@@ -84,6 +86,7 @@ contract Messenger {
         requestInfo[chatCode] = newRequ;
     }
 
+    /// @dev Accepts a friend request from another user.
     function acceptRequest(address senderAddr) external {
         bytes32 chatCode = _getChatCode(msg.sender, senderAddr);
         requestInfo[chatCode].isAcc = true;
@@ -136,7 +139,7 @@ contract Messenger {
         require(checkUserExists(msg.sender), "Create an account first");
         require(
             checkUserExists(friendAddr),
-            "The person you wanna send msg isn't registered!!"
+            "The person you want to send a message to isn't registered!"
         );
         require(
             checkAlreadyFriends(msg.sender, friendAddr),
@@ -160,5 +163,21 @@ contract Messenger {
     {
         bytes32 chatCode = _getChatCode(msg.sender, friendAddr);
         return allMessages[chatCode];
+    }
+
+    /// @dev Returns the total number of registered users.
+    function getAllUsersCount() external view returns (uint256) {
+        return getAllUsers.length;
+    }
+
+    /// @dev Returns the name and address of a user based on the provided index.
+    function getUserByIndex(uint256 index)
+        external
+        view
+        returns (string memory, address)
+    {
+        require(index < getAllUsers.length, "Invalid index");
+        AllUsers memory user = getAllUsers[index];
+        return (user.name, user.accountAddress);
     }
 }
