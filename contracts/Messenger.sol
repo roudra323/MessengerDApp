@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.10;
 
+/// @title Messenger: A smart contract for messaging and friend requests
 contract Messenger {
     struct User {
         string name;
@@ -9,6 +10,7 @@ contract Messenger {
 
     struct Friend {
         address addr;
+        string name;
     }
 
     struct Message {
@@ -23,18 +25,30 @@ contract Messenger {
         address accountAddress;
     }
 
-    struct friendRequ {
+    struct FriendRequ {
         address from;
         address to;
         bool isAcc;
     }
 
-    AllUsers[] getAllUsers;
+    // State Variables
+    AllUsers[] public getAllUsers;
 
-    mapping(address => User) userList;
-    mapping(bytes32 => Message[]) allMessages;
-    mapping(bytes32 => friendRequ) requestInfo;
-    mapping(address => friendRequ[]) sentRequest;
+    mapping(address => User) public userList;
+    mapping(bytes32 => Message[]) public allMessages;
+    mapping(bytes32 => FriendRequ) public requestInfo;
+    mapping(address => FriendRequ[]) public sentRequest;
+    mapping(address => FriendRequ[]) public receivedRequ;
+
+    // Events (if needed, you can add events here)
+    // ...
+    event NewMember(address memberAddr, string name);
+
+    // Modifiers (if needed, you can add modifiers here)
+    // ...
+
+    // Constructor (if needed, you can add constructor here)
+    // ...
 
     /// @dev Checks if a user with the given address exists.
     function checkUserExists(address addr) public view returns (bool) {
@@ -47,10 +61,11 @@ contract Messenger {
         require(bytes(_name).length > 0, "User name can't be null");
         userList[msg.sender].name = _name;
         getAllUsers.push(AllUsers(_name, msg.sender));
+        emit NewMember(msg.sender, _name);
     }
 
     /// @dev Returns the name of the user associated with the given address.
-    function getUserName(address _addr) external view returns (string memory) {
+    function getUserName(address _addr) internal view returns (string memory) {
         require(checkUserExists(msg.sender), "User is not exist.");
         return userList[_addr].name;
     }
@@ -77,14 +92,21 @@ contract Messenger {
         return false;
     }
 
+    /// @dev Sends a friend request to another user.
     function sendRequest(address friendAddr) external {
+        require(checkUserExists(msg.sender), "You are not registered");
+        require(checkUserExists(friendAddr), "User doesn't exist");
         bytes32 chatCode = _getChatCode(msg.sender, friendAddr);
-        friendRequ memory newRequ = friendRequ(msg.sender, friendAddr, false);
+        FriendRequ memory newRequ = FriendRequ(msg.sender, friendAddr, false);
         sentRequest[msg.sender].push(newRequ);
+        receivedRequ[friendAddr].push(newRequ);
         requestInfo[chatCode] = newRequ;
     }
 
+    /// @dev Accepts a friend request from another user.
     function acceptRequest(address senderAddr) external {
+        require(checkUserExists(msg.sender), "You are not registered");
+        require(checkUserExists(senderAddr), "User doesn't exist");
         bytes32 chatCode = _getChatCode(msg.sender, senderAddr);
         requestInfo[chatCode].isAcc = true;
         addFriend(senderAddr);
@@ -100,7 +122,7 @@ contract Messenger {
             "User can't add himself as a friend!"
         );
         require(
-            checkAlreadyFriends(msg.sender, friendAddr),
+            !checkAlreadyFriends(msg.sender, friendAddr),
             "Already a friend"
         );
         _addFriend(msg.sender, friendAddr);
@@ -109,7 +131,7 @@ contract Messenger {
 
     /// @dev Internal function to add a new friend.
     function _addFriend(address me, address friendAddr) internal {
-        Friend memory newFriend = Friend(friendAddr);
+        Friend memory newFriend = Friend(friendAddr, getUserName(friendAddr));
         userList[me].friendList.push(newFriend);
     }
 
@@ -162,6 +184,23 @@ contract Messenger {
         return allMessages[chatCode];
     }
 
+    /// @dev Returns all the friend requests sent by the caller.
+    function getAllSentRequest() external view returns (FriendRequ[] memory) {
+        FriendRequ[] memory friendRequests = sentRequest[msg.sender];
+        return friendRequests;
+    }
+
+    /// @dev Returns all the friend requests received by the caller.
+    function getAllReceivedRequest()
+        external
+        view
+        returns (FriendRequ[] memory)
+    {
+        FriendRequ[] memory friendRequests = receivedRequ[msg.sender];
+        return friendRequests;
+    }
+
+    /// @dev Returns the list of all users registered in the contract.
     function getAllUser() external view returns (AllUsers[] memory) {
         AllUsers[] memory allUsersData = new AllUsers[](getAllUsers.length);
 
