@@ -5,7 +5,7 @@ async function main() {
 
   console.log("Deploying contracts with the account:", deployer.address);
 
-  const contract = await ethers.deployContract("WagmiTest");
+  const contract = await ethers.deployContract("Messenger");
 
   console.log("Contract address:", await contract.getAddress());
 }

@@ -239,9 +239,9 @@ contract Messenger {
     /// @dev Returns the list of all users registered in the contract.
     /// @return An array of user data containing name and address.
     function getAllUser() external view returns (AllUsers[] memory) {
-        AllUsers[] memory allUsersData = new AllUsers[](getAllUsers.length);
-
-        for (uint256 i = 0; i < getAllUsers.length; i++) {
+        uint256 length = getAllUsers.length;
+        AllUsers[] memory allUsersData = new AllUsers[](length);
+        for (uint256 i = 0; i < length; i++) {
             AllUsers memory user = getAllUsers[i];
             allUsersData[i] = AllUsers(user.name, user.accountAddress);
         }
