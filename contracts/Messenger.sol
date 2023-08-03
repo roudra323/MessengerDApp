@@ -29,26 +29,21 @@ contract Messenger {
         address from;
         address to;
         bool isAcc;
+        bool isSent;
+        bool isRejec;
     }
 
     // State Variables
-    AllUsers[] public getAllUsers;
+    AllUsers[] getAllUsers;
 
     mapping(address => User) public userList;
-    mapping(bytes32 => Message[]) public allMessages;
-    mapping(bytes32 => FriendRequ) public requestInfo;
-    mapping(address => FriendRequ[]) public sentRequest;
-    mapping(address => FriendRequ[]) public receivedRequ;
+    mapping(bytes32 => Message[]) allMessages;
+    mapping(bytes32 => FriendRequ) requestInfo;
+    mapping(address => FriendRequ[]) sentRequest;
+    mapping(address => FriendRequ[]) receivedRequ;
 
-    // Events (if needed, you can add events here)
-    // ...
+    // Events
     event NewMember(address memberAddr, string name);
-
-    // Modifiers (if needed, you can add modifiers here)
-    // ...
-
-    // Constructor (if needed, you can add constructor here)
-    // ...
 
     /// @dev Checks if a user with the given address exists.
     function checkUserExists(address addr) public view returns (bool) {
@@ -56,6 +51,7 @@ contract Messenger {
     }
 
     /// @dev Creates a new user account with the provided name.
+    /// @param _name The name of the user.
     function createAcc(string calldata _name) external {
         require(!checkUserExists(msg.sender), "User is already exist.");
         require(bytes(_name).length > 0, "User name can't be null");
@@ -65,6 +61,7 @@ contract Messenger {
     }
 
     /// @dev Returns the name of the user associated with the given address.
+    /// @param _addr The address of the user.
     function getUserName(address _addr) internal view returns (string memory) {
         require(checkUserExists(msg.sender), "User is not exist.");
         return userList[_addr].name;
@@ -93,23 +90,56 @@ contract Messenger {
     }
 
     /// @dev Sends a friend request to another user.
+    /// @param friendAddr The address of the user to send the friend request to.
     function sendRequest(address friendAddr) external {
         require(checkUserExists(msg.sender), "You are not registered");
         require(checkUserExists(friendAddr), "User doesn't exist");
         bytes32 chatCode = _getChatCode(msg.sender, friendAddr);
-        FriendRequ memory newRequ = FriendRequ(msg.sender, friendAddr, false);
+        FriendRequ memory newRequ = FriendRequ(
+            msg.sender,
+            friendAddr,
+            false,
+            true,
+            false
+        );
         sentRequest[msg.sender].push(newRequ);
         receivedRequ[friendAddr].push(newRequ);
         requestInfo[chatCode] = newRequ;
     }
 
     /// @dev Accepts a friend request from another user.
+    /// @param senderAddr The address of the user who sent the friend request.
     function acceptRequest(address senderAddr) external {
         require(checkUserExists(msg.sender), "You are not registered");
         require(checkUserExists(senderAddr), "User doesn't exist");
         bytes32 chatCode = _getChatCode(msg.sender, senderAddr);
+        require(
+            requestInfo[chatCode].isSent,
+            "Address doesn't sent you friend Request"
+        );
         requestInfo[chatCode].isAcc = true;
         addFriend(senderAddr);
+    }
+
+    /// @dev Checks if the friend request from a user is accepted.
+    /// @param friendAddr The address of the user who sent the friend request.
+    /// @return Whether the request is accepted or not.
+    function checkIfAccepted(address friendAddr) external view returns (bool) {
+        bytes32 chatCode = _getChatCode(msg.sender, friendAddr);
+        return requestInfo[chatCode].isAcc;
+    }
+
+    /// @dev Rejects a friend request from another user.
+    /// @param friendAddress The address of the user who sent the friend request.
+    function rejectRequest(address friendAddress) external {
+        require(checkUserExists(msg.sender), "You are not registered");
+        require(checkUserExists(friendAddress), "User doesn't exist");
+        bytes32 chatCode = _getChatCode(msg.sender, friendAddress);
+        require(
+            requestInfo[chatCode].isSent,
+            "Address doesn't sent you friend Request"
+        );
+        requestInfo[chatCode].isRejec = true;
     }
 
     /// @dev Adds a new friend to the user's friend list.
@@ -154,6 +184,8 @@ contract Messenger {
     }
 
     /// @dev Sends a message to a friend.
+    /// @param friendAddr The address of the friend to whom the message is sent.
+    /// @param _msg The message content.
     function sendMessage(address friendAddr, string calldata _msg) external {
         require(checkUserExists(msg.sender), "Create an account first");
         require(
@@ -175,6 +207,8 @@ contract Messenger {
     }
 
     /// @dev Reads all the messages between the caller and a friend.
+    /// @param friendAddr The address of the friend whose messages are being read.
+    /// @return An array of messages exchanged between the caller and the friend.
     function readMessage(address friendAddr)
         external
         view
@@ -185,12 +219,14 @@ contract Messenger {
     }
 
     /// @dev Returns all the friend requests sent by the caller.
+    /// @return An array of friend requests sent by the caller.
     function getAllSentRequest() external view returns (FriendRequ[] memory) {
         FriendRequ[] memory friendRequests = sentRequest[msg.sender];
         return friendRequests;
     }
 
     /// @dev Returns all the friend requests received by the caller.
+    /// @return An array of friend requests received by the caller.
     function getAllReceivedRequest()
         external
         view
@@ -201,6 +237,7 @@ contract Messenger {
     }
 
     /// @dev Returns the list of all users registered in the contract.
+    /// @return An array of user data containing name and address.
     function getAllUser() external view returns (AllUsers[] memory) {
         AllUsers[] memory allUsersData = new AllUsers[](getAllUsers.length);
 
