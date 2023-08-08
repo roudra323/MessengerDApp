@@ -1,0 +1,25 @@
+.home-bg {
+  background: hsla(235, 21%, 21%, 1);
+
+  background: linear-gradient(
+    270deg,
+    hsla(235, 21%, 21%, 1) 18%,
+    hsla(210, 97%, 54%, 1) 100%
+  );
+
+  background: -moz-linear-gradient(
+    270deg,
+    hsla(235, 21%, 21%, 1) 18%,
+    hsla(210, 97%, 54%, 1) 100%
+  );
+
+  background: -webkit-linear-gradient(
+    270deg,
+    hsla(235, 21%, 21%, 1) 18%,
+    hsla(210, 97%, 54%, 1) 100%
+  );
+
+  filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#2B2D42", endColorstr="#1789FC", GradientType=1 );
+
+  height: 100vh;
+}
