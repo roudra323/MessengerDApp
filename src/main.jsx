@@ -4,6 +4,7 @@ import {
   getDefaultWallets,
   RainbowKitProvider,
   darkTheme,
+  midnightTheme,
 } from "@rainbow-me/rainbowkit";
 import { configureChains, createConfig, sepolia, WagmiConfig } from "wagmi";
 import { polygon, optimism, arbitrum, zora } from "wagmi/chains";
@@ -36,8 +37,8 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <WagmiConfig config={wagmiConfig}>
       <RainbowKitProvider
         chains={chains}
-        theme={darkTheme({
-          accentColor: "#7b3fe4",
+        theme={midnightTheme({
+          accentColor: "#e63946",
           accentColorForeground: "white",
           borderRadius: "small",
           fontStack: "system",
