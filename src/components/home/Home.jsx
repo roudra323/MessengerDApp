@@ -1,6 +1,7 @@
 import "./Home.css";
 import { Center, Flex, Text } from "@chakra-ui/react";
 import { useAccount } from "wagmi";
+import Footer from "../footer/Footer";
 
 function Home() {
   const { address, isConnected, isDisconnected } = useAccount();
@@ -12,17 +13,19 @@ function Home() {
         <Center flex="1">
           {isConnected ? (
             <Text
-              pl="50px"
+              pl="10px"
               bgGradient="linear(to-l, #7928CA, #FF0080)"
               bgClip="text"
               fontSize="6xl"
               fontWeight="extrabold"
             >
-              Send Requests, Chat, and Forge Lasting Bonds!
+              Send Requests,
+              <br /> Chat,
+              <br /> and Forge Lasting Bonds!
             </Text>
           ) : (
             <Text
-              pl="50px"
+              pl="10px"
               bgGradient="linear(to-l, #7928CA, #FF0080)"
               bgClip="text"
               fontSize="6xl"
@@ -40,6 +43,7 @@ function Home() {
           <img className="home-img" src="gif.jpg" alt="GIF" width="100%" />
         </div>
       </Flex>
+      <Footer />
     </div>
   );
 }

@@ -39,7 +39,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         modalSize="compact"
         chains={chains}
         theme={midnightTheme({
-          accentColor: "#e63946",
+          accentColor: "#7928CA",
           accentColorForeground: "white",
           borderRadius: "small",
           fontStack: "system",

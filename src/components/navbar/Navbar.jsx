@@ -11,7 +11,7 @@ const Navbar = () => {
         <Image
           className="logo"
           boxSize="60px"
-          src="result.png"
+          src="logo-bg-rmv.png"
           alt="Dan Abramov"
         />
       </Flex>
