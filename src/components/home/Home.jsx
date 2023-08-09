@@ -1,8 +1,17 @@
 import React from "react";
 import "./Home.css";
-import { Center, Flex, Text, Box, Image } from "@chakra-ui/react";
+import {
+  Center,
+  Flex,
+  Text,
+  Box,
+  Image,
+  Button,
+  VStack,
+} from "@chakra-ui/react";
 import { useAccount } from "wagmi";
 import Footer from "../footer/Footer";
+import CreateAcc from "../createAcc/createAcc";
 
 function Home() {
   const { isConnected, isDisconnected } = useAccount();
@@ -18,17 +27,20 @@ function Home() {
         {/* Left Section: Text */}
         <Center flex="1">
           {isConnected ? (
-            <Text
-              pl="10px"
-              bgGradient="linear(to-l, #7928CA, #FF0080)"
-              bgClip="text"
-              fontSize="6xl"
-              fontWeight="extrabold"
-            >
-              Send Requests,
-              <br /> Chat,
-              <br /> and Forge Lasting Bonds!
-            </Text>
+            <VStack>
+              <Text
+                pl="10px"
+                bgGradient="linear(to-l, #7928CA, #FF0080)"
+                bgClip="text"
+                fontSize="6xl"
+                fontWeight="extrabold"
+              >
+                Send Requests
+                <br /> Chat
+                <br /> And Forge Lasting Bonds!
+              </Text>
+              <CreateAcc />
+            </VStack>
           ) : (
             <Text
               pl="10px"
@@ -45,7 +57,6 @@ function Home() {
 
           {/* Right Section: GIF */}
           <div>
-            {/* <img className="home-img" src="gif.jpg" alt="GIF" width="100%" /> */}
             <Image
               pl="100px"
               className="home-img"

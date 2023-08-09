@@ -55,6 +55,7 @@ export default function SmallCentered() {
         spacing={4}
         justify={"center"}
         align={"center"}
+        pt="30px"
       >
         <Logo />
         <Stack direction={"row"} spacing={6}>
