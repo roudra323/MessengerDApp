@@ -1,14 +1,20 @@
+import React from "react";
 import "./Home.css";
-import { Center, Flex, Text } from "@chakra-ui/react";
+import { Center, Flex, Text, Box, Image } from "@chakra-ui/react";
 import { useAccount } from "wagmi";
 import Footer from "../footer/Footer";
 
 function Home() {
-  const { address, isConnected, isDisconnected } = useAccount();
+  const { isConnected, isDisconnected } = useAccount();
 
   return (
-    <div className="home-bg">
-      <Flex alignItems="center" justifyContent="space-between" pt="80px">
+    <Box className="page-container">
+      <Flex
+        className="content-container"
+        alignItems="center"
+        justifyContent="space-between"
+        pt="80px"
+      >
         {/* Left Section: Text */}
         <Center flex="1">
           {isConnected ? (
@@ -36,15 +42,22 @@ function Home() {
               <br /> A World of Seamless Friendship
             </Text>
           )}
-        </Center>
 
-        {/* Right Section: GIF */}
-        <div>
-          <img className="home-img" src="gif.jpg" alt="GIF" width="100%" />
-        </div>
+          {/* Right Section: GIF */}
+          <div>
+            {/* <img className="home-img" src="gif.jpg" alt="GIF" width="100%" /> */}
+            <Image
+              pl="100px"
+              className="home-img"
+              src="gif.jpg"
+              alt="GIF"
+              width="100%"
+            />
+          </div>
+        </Center>
       </Flex>
       <Footer />
-    </div>
+    </Box>
   );
 }
 

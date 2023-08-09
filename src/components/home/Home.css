@@ -1,12 +1,30 @@
-.home-bg {
+.page-container {
+  background: #1b263b;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.content-container {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.home-img {
+  max-width: 100%;
+  height: auto;
+  padding-left: '30px';
+}
+/* .home-bg {
   background: #1b263b;
   min-height: 100vh;
-  display: flex; /* Add this line */
-  flex-direction: column; /* Add this line */
+  display: flex; 
+  flex-direction: column; 
 }
 
 @media (max-width: 768px) {
   .home-img {
-    display: none; /* Hide the image */
+    display: none; 
   }
-}
+} */

@@ -47,7 +47,7 @@ const SocialButton = ({ children, label, href }) => {
 
 export default function SmallCentered() {
   return (
-    <Box bg="#0d1b2a" color="white" mb="0px">
+    <Box bg="#0d1b2a" color="white">
       <Container
         as={Stack}
         maxW={"6xl"}
