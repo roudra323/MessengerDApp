@@ -36,6 +36,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <WagmiConfig config={wagmiConfig}>
       <RainbowKitProvider
+        modalSize="compact"
         chains={chains}
         theme={midnightTheme({
           accentColor: "#e63946",

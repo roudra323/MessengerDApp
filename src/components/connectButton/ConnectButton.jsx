@@ -12,7 +12,6 @@ function App() {
     contract: null,
   });
   const { address, isConnected, isDisconnected } = useAccount();
-  const [balance, setBalance] = useState(0);
 
   const contractInstance = async () => {
     const contractAddress = import.meta.env.VITE_CONTRACT_ADDRESS;
@@ -29,11 +28,6 @@ function App() {
           signer
         );
         setState({ provider, signer, contract });
-
-        const ContractBalance = await contract.contractBalance();
-        const balEth = ethers.formatEther(ContractBalance);
-        console.log("Contract balance (eth)", balEth);
-        setBalance(balEth);
       } else {
         alert("Please install metamask");
       }
@@ -58,7 +52,13 @@ function App() {
           padding: 12,
         }}
       >
-        <ConnectButton onPress={contractInstance} />
+        <ConnectButton
+          onPress={contractInstance}
+          accountStatus={{
+            smallScreen: "avatar",
+            largeScreen: "full",
+          }}
+        />
         {console.log("state", state)}
       </div>
     </div>
