@@ -15,7 +15,6 @@ import {
 } from "@chakra-ui/react";
 import { useDisclosure } from "@chakra-ui/react";
 import { useAccount } from "wagmi";
-import theme from "../../theme";
 
 const CreateAcc = () => {
   const { address, isConnected, isDisconnected } = useAccount();
