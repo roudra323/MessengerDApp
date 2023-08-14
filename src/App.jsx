@@ -48,7 +48,7 @@ function App() {
     <div className="app">
       <Navbar />
       {console.log("This is from the App.jsx", state)}
-      <Home />
+      <Home state={state} />
       <Footer />
     </div>
   );

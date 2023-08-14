@@ -1,4 +1,5 @@
 import React from "react";
+import { useEffect } from "react";
 import "./Home.css";
 import {
   Center,
@@ -11,9 +12,23 @@ import {
 } from "@chakra-ui/react";
 import { useAccount } from "wagmi";
 import CreateAcc from "../createAcc/createAcc";
+import Features from "../ops/features";
 
-function Home() {
-  const { isConnected, isDisconnected } = useAccount();
+function Home({ state }) {
+  const { contract } = state;
+  const { address, isConnected, isDisconnected } = useAccount();
+
+  const isRegi = async () => {
+    const isRegistered = await contract.checkUserExists(address);
+    console.log("isRegistered", isRegistered);
+    return isRegistered;
+  };
+
+  // useEffect(() => {
+  //   if (isConnected) {
+  //     isRegi();
+  //   }
+  // }, [isConnected, contract, address]);
 
   return (
     <Box className="page-container">
@@ -38,8 +53,7 @@ function Home() {
                 <br /> Chat
                 <br /> And Forge Lasting Bonds!
               </Text>
-              {}
-              <CreateAcc />
+              {isRegi() ? <Features /> : <CreateAcc />}
             </VStack>
           ) : (
             <Text
