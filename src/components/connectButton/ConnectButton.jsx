@@ -5,7 +5,7 @@ import { Web3Provider } from "@ethersproject/providers";
 import { ethers } from "ethers";
 import { useState, useEffect } from "react";
 
-function App() {
+function Connect({ onUpdateState }) {
   const [state, setState] = useState({
     provider: null,
     signer: null,
@@ -28,6 +28,7 @@ function App() {
           signer
         );
         setState({ provider, signer, contract });
+        onUpdateState(state);
       } else {
         alert("Please install metamask");
       }
@@ -65,4 +66,4 @@ function App() {
   );
 }
 
-export default App;
+export default Connect;

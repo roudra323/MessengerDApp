@@ -10,7 +10,6 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { useAccount } from "wagmi";
-import Footer from "../footer/Footer";
 import CreateAcc from "../createAcc/createAcc";
 
 function Home() {
@@ -39,6 +38,7 @@ function Home() {
                 <br /> Chat
                 <br /> And Forge Lasting Bonds!
               </Text>
+              {}
               <CreateAcc />
             </VStack>
           ) : (
@@ -54,7 +54,6 @@ function Home() {
               <br /> A World of Seamless Friendship
             </Text>
           )}
-
           {/* Right Section: GIF */}
           <div>
             <Image
@@ -67,7 +66,6 @@ function Home() {
           </div>
         </Center>
       </Flex>
-      <Footer />
     </Box>
   );
 }
