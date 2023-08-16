@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Button,
   Modal,
@@ -16,12 +16,25 @@ import {
 import { useDisclosure } from "@chakra-ui/react";
 import { useAccount } from "wagmi";
 
-const CreateAcc = () => {
+const CreateAcc = ({ state }) => {
+  const { contract } = state;
   const { address, isConnected, isDisconnected } = useAccount();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const initialRef = React.useRef(null);
   const finalRef = React.useRef(null);
+  const [name, setName] = useState("");
+  const userRegister = async () => {
+    try {
+      await contract.createAcc(name); // Pass the name to the function
+      onClose(); // Close the modal after successful registration
+    } catch (error) {
+      console.error("Error registering user:", error);
+    }
+  };
+  const handleNameChange = (event) => {
+    setName(event.target.value); // Update the name state as the user types
+  };
   return (
     <div>
       <Button className="button" variant="outline" onClick={onOpen}>
@@ -52,12 +65,21 @@ const CreateAcc = () => {
 
             <FormControl mt={4}>
               <FormLabel>Name</FormLabel>
-              <Input placeholder="Name" />
+              <Input
+                placeholder="Name"
+                value={name}
+                onChange={handleNameChange}
+              />
             </FormControl>
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme="blue" mr={3}>
+            <Button
+              className="button"
+              colorScheme="blue"
+              mr={3}
+              onClick={userRegister}
+            >
               Create
             </Button>
             <Button onClick={onClose}>Cancel</Button>

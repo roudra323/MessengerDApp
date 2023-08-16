@@ -1,5 +1,4 @@
-import React from "react";
-import { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./Home.css";
 import {
   Center,
@@ -18,17 +17,24 @@ function Home({ state }) {
   const { contract } = state;
   const { address, isConnected, isDisconnected } = useAccount();
 
+  const [isRegistered, setIsRegistered] = useState(false); // State to track registration status
+
+  const checkRegistration = async () => {
+    if (isConnected) {
+      const registered = await isRegi();
+      setIsRegistered(registered);
+    }
+  };
+
+  useEffect(() => {
+    checkRegistration();
+  }, [isConnected, contract, address]);
+
   const isRegi = async () => {
     const isRegistered = await contract.checkUserExists(address);
     console.log("isRegistered", isRegistered);
     return isRegistered;
   };
-
-  // useEffect(() => {
-  //   if (isConnected) {
-  //     isRegi();
-  //   }
-  // }, [isConnected, contract, address]);
 
   return (
     <Box className="page-container">
@@ -53,7 +59,7 @@ function Home({ state }) {
                 <br /> Chat
                 <br /> And Forge Lasting Bonds!
               </Text>
-              {isRegi() ? <Features /> : <CreateAcc />}
+              {isRegistered ? <Features /> : <CreateAcc state={state} />}
             </VStack>
           ) : (
             <Text
