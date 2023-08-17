@@ -1,7 +1,6 @@
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useState, useEffect } from "react";
-import { Flex } from "@chakra-ui/react";
-import { Image } from "@chakra-ui/react";
+import { Flex,Button,Text,Image } from "@chakra-ui/react";
 import "./Navbar.css";
 const Navbar = () => {
   const [state, setState] = useState({

@@ -27,8 +27,8 @@ function Home({ state }) {
   };
 
   useEffect(() => {
-    checkRegistration();
-  }, [isConnected, contract, address]);
+    checkRegistration(); // Update registration status whenever any relevant state changes
+  }, [isConnected, contract, address, isRegistered]);
 
   const isRegi = async () => {
     const isRegistered = await contract.checkUserExists(address);
