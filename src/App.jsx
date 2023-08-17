@@ -1,6 +1,7 @@
 import abi from "../artifacts/contracts/Messenger.sol/Messenger.json";
 import { Web3Provider } from "@ethersproject/providers";
 import { ethers } from "ethers";
+import { Routes, Route } from "react-router-dom";
 import Home from "./components/home/Home";
 import Navbar from "./components/navbar/Navbar";
 import Footer from "./components/footer/Footer";
@@ -47,8 +48,10 @@ function App() {
   return (
     <div className="app">
       <Navbar />
+      <Routes>
+        <Route path="/" element={<Home state={state} />} />
+      </Routes>
       {console.log("This is from the App.jsx", state)}
-      <Home state={state} />
       <Footer />
     </div>
   );
