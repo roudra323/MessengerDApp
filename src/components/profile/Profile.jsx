@@ -42,6 +42,7 @@ const Profile = ({ address }) => {
               <VStack>
                 <Image boxSize="50px" src="avatar.png" alt="Dan Abramov" />
                 <Text>{address}</Text>
+                <Text>Total Friends:</Text>
               </VStack>
             </Center>
           </ModalBody>

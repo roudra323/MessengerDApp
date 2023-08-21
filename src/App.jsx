@@ -6,6 +6,7 @@ import Home from "./components/home/Home";
 import Profile from "./components/profile/Profile";
 import Navbar from "./components/navbar/Navbar";
 import Footer from "./components/footer/Footer";
+import Chat from "./components/Chatting/Chat";
 import { useState, useEffect } from "react";
 import { useAccount } from "wagmi";
 function App() {
@@ -51,7 +52,7 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<Home state={state} />} />
-        <Route path="/profile" element={<Profile state={state} />} />
+        <Route path="/chat" element={<Chat state={state} />} />
       </Routes>
       {console.log("This is from the App.jsx", state)}
       <Footer />
