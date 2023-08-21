@@ -3,6 +3,7 @@ import { Web3Provider } from "@ethersproject/providers";
 import { ethers } from "ethers";
 import { Routes, Route } from "react-router-dom";
 import Home from "./components/home/Home";
+import Profile from "./components/profile/Profile";
 import Navbar from "./components/navbar/Navbar";
 import Footer from "./components/footer/Footer";
 import { useState, useEffect } from "react";
@@ -50,6 +51,7 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<Home state={state} />} />
+        <Route path="/profile" element={<Profile state={state} />} />
       </Routes>
       {console.log("This is from the App.jsx", state)}
       <Footer />

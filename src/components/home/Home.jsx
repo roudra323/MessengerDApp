@@ -59,7 +59,11 @@ function Home({ state }) {
                 <br /> Chat
                 <br /> And Forge Lasting Bonds!
               </Text>
-              {isRegistered ? <Features /> : <CreateAcc state={state} />}
+              {isRegistered ? (
+                <Features state={state} address={address} />
+              ) : (
+                <CreateAcc state={state} />
+              )}
             </VStack>
           ) : (
             <Text
