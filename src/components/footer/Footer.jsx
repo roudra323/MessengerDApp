@@ -9,6 +9,7 @@ import {
   Flex,
 } from "@chakra-ui/react";
 import { FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
+import "./Footer";
 
 const Logo = () => {
   return (
@@ -78,6 +79,7 @@ export default function SmallCentered() {
         borderTopWidth={1}
         borderStyle={"solid"}
         borderColor={useColorModeValue("gray.200", "gray.700")}
+        zIndex={500}
       >
         <Container
           as={Stack}

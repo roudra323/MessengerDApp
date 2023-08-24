@@ -1,0 +1,44 @@
+.sidebar {
+  top: 0;
+  left: 0;
+  width: 250px;
+  height: 100%;
+  z-index: 100;
+  transition: all 0.5s ease;
+  border: #0d1b2a;
+}
+
+/* .sidebar {
+  top: 0;
+  left: 0;
+  width: 250px;
+  height: 100%;
+  z-index: 100;
+  transition: transform 0.5s ease;
+  transform: translateX(-50%);
+  background-color: #0d1b2a;
+  color: white;
+}
+
+.sidebar.open {
+  transform: translateX(0);
+}
+
+.sidebar .chakra-icon {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  cursor: pointer;
+} */
+
+/* @media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+  }
+  .sidebar .chakra-icon {
+    display: block;
+  }
+  .sidebar.closed {
+    transform: translateX(-100%);
+  }
+} */
