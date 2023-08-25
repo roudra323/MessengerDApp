@@ -1,6 +1,7 @@
 import React from "react";
 import Sidebar from "../Sidebar/Sidebar";
-import { Divider, Center, Text, Box, Flex } from "@chakra-ui/react";
+import { Divider, Center, Text, Box, Flex, Spacer } from "@chakra-ui/react";
+import ChatBox from "./ChatBox";
 
 function Chat() {
   return (
@@ -8,8 +9,8 @@ function Chat() {
       <div className="content-container">
         <Flex>
           <Sidebar />
-          <br />
-          <Text>This is where all the chats will arrive</Text>
+
+          <ChatBox />
         </Flex>
       </div>
     </div>

@@ -30,10 +30,11 @@ const Sidebar = () => {
     <>
       <Button
         leftIcon={<EmailIcon />}
-        colorScheme="blackAlpha"
         onClick={onOpen}
         size="md"
         marginRight={5}
+        bg="#0d1b2a"
+        color="white"
       >
         ChatList
       </Button>
