@@ -9,7 +9,6 @@ function Chat() {
       <div className="content-container">
         <Flex>
           <Sidebar />
-
           <ChatBox />
         </Flex>
       </div>
