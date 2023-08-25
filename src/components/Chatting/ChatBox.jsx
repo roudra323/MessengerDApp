@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   Box,
   Flex,
@@ -30,6 +30,7 @@ const Message = ({ text, sender }) => {
 const ChatBox = () => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
+  const chatBoxRef = useRef(null); // Create a ref for the chat box container
 
   const sendMessage = () => {
     if (newMessage.trim() === "") return;
@@ -44,9 +45,21 @@ const ChatBox = () => {
     }
   };
 
+  // Scroll to the bottom when messages are updated
+  useEffect(() => {
+    if (chatBoxRef.current) {
+      chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
+    }
+  }, [messages]);
+
   return (
     <Box w="80%" bg="#1b263b" color="white">
-      <Box overflowY="auto" height="70vh" pr="50px">
+      <Box
+        ref={chatBoxRef} // Assign the ref to the chat box container
+        overflowY="auto"
+        height="70vh"
+        pr="50px"
+      >
         {messages.map((message, index) => (
           <Message key={index} text={message.text} sender={message.sender} />
         ))}
@@ -57,7 +70,7 @@ const ChatBox = () => {
         <Input
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
-          onKeyDown={handleKeyDown} // Add the onKeyDown event listener
+          onKeyDown={handleKeyDown}
           placeholder="Type a message..."
         />
         <IconButton
