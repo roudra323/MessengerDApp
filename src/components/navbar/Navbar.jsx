@@ -1,8 +1,10 @@
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useState, useEffect } from "react";
-import { Flex,Button,Text,Image } from "@chakra-ui/react";
+import { Flex, Button, Text, Image } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 import "./Navbar.css";
 const Navbar = () => {
+  const navigate = useNavigate();
   const [state, setState] = useState({
     provider: null,
     signer: null,
@@ -16,6 +18,8 @@ const Navbar = () => {
           boxSize="60px"
           src="logo-bg-rmv.png"
           alt="ChainChat"
+          onClick={() => navigate("/")}
+          cursor="pointer"
         />
       </Flex>
       <Flex>

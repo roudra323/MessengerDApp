@@ -24,7 +24,7 @@ function Features({ state, address }) {
           </Text>
         </Button>
         <Friends />
-        <FindFriends />
+        <FindFriends state={state} address={address} />
       </Stack>
       <Button className="button">
         <Text pl="10px" color="white" fontSize="xl" fontWeight="extrabold">

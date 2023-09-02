@@ -19,10 +19,28 @@ import {
 } from "@chakra-ui/react";
 import { useDisclosure } from "@chakra-ui/react";
 
-const FriendFriends = () => {
+const FriendFriends = ({ state, address }) => {
+  const { contract } = state;
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = React.useRef(null);
   const finalRef = React.useRef(null);
+  const [friends, setFriends] = React.useState([]);
+
+  const findFriends = async () => {
+    const friends = await contract.getAllUser();
+    console.log(friends);
+    setFriends(friends);
+  };
+
+  const sendRequest = async (friend) => {
+    await contract.sendRequest(friend);
+    console.log(friend);
+  };
+
+  React.useEffect(() => {
+    findFriends();
+  }, []); // Call findFriends when the component mounts
+
   return (
     <div>
       <Button className="button" onClick={onOpen}>
@@ -43,44 +61,33 @@ const FriendFriends = () => {
           <ModalBody pb={6}>
             <Center>
               <VStack>
-                <HStack pt={"10px"}>
-                  <Image boxSize="50px" src="avatar.png" alt="Dan Abramov" />
-                  <Flex>
-                    <VStack>
-                      <Text>Name: Alex Smith</Text>
-                      <Text>Address: afjhadhfoiaeifhadbvjadbv</Text>
-                      <Button className="button" color="white">
-                        Add
-                      </Button>
-                    </VStack>
-                  </Flex>
-                </HStack>
-                <Divider orientation="horizontal" />
-                <HStack pt={"10px"}>
-                  <Image boxSize="50px" src="avatar.png" alt="Dan Abramov" />
-                  <Flex>
-                    <VStack>
-                      <Text>Name: Alex Smith</Text>
-                      <Text>Address: afjhadhfoiaeifhadbvjadbv</Text>
-                      <Button className="button" color="white">
-                        Add
-                      </Button>
-                    </VStack>
-                  </Flex>
-                </HStack>
-                <Divider orientation="horizontal" />
-                <HStack pt={"10px"}>
-                  <Image boxSize="50px" src="avatar.png" alt="Dan Abramov" />
-                  <Flex>
-                    <VStack>
-                      <Text>Name: Alex Smith</Text>
-                      <Text>Address: afjhadhfoiaeifhadbvjadbv</Text>
-                      <Button className="button" color="white">
-                        Add
-                      </Button>
-                    </VStack>
-                  </Flex>
-                </HStack>
+                {friends
+                  .filter((friend) => friend[1] != address)
+                  .map((friend, index) => (
+                    <React.Fragment key={index}>
+                      <HStack key={index} pt={"10px"}>
+                        <Image
+                          boxSize="50px"
+                          src="avatar.png"
+                          alt={friend[0]}
+                        />
+                        <Flex>
+                          <VStack>
+                            <Text>{friend[0]}</Text>
+                            <Text>{friend[1]}</Text>
+                            <Button
+                              className="button"
+                              color="white"
+                              onClick={() => sendRequest(friend[1])}
+                            >
+                              Add
+                            </Button>
+                          </VStack>
+                        </Flex>
+                      </HStack>
+                      <Divider orientation="horizontal" />
+                    </React.Fragment>
+                  ))}
               </VStack>
             </Center>
           </ModalBody>
