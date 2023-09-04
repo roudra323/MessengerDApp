@@ -32,6 +32,10 @@ const ReceivedRequ = ({ state, address }) => {
     return setRequests(requList);
   };
 
+  const accptRequ = async (friend) => {
+    await contract.acceptRequest(friend);
+  };
+
   React.useEffect(() => {
     receivedRequ();
   }, [contract, address]);
@@ -55,9 +59,9 @@ const ReceivedRequ = ({ state, address }) => {
           <ModalCloseButton />
           <ModalBody pb={6}>
             <Center>
-              {/* <VStack>
+              <VStack>
                 {requests
-                  .filter((friend) => friend[1] != address)
+                  .filter((friend) => friend[2] == false)
                   .map((friend, index) => (
                     <React.Fragment key={index}>
                       <HStack key={index} pt={"10px"}>
@@ -69,13 +73,13 @@ const ReceivedRequ = ({ state, address }) => {
                         <Flex>
                           <VStack>
                             <Text>{friend[0]}</Text>
-                            <Text>{friend[1]}</Text>
+
                             <Button
                               className="button"
                               color="white"
-                              onClick={() => sendRequest(friend[1])}
+                              onClick={() => accptRequ(friend[0])}
                             >
-                              Add
+                              Accept
                             </Button>
                           </VStack>
                         </Flex>
@@ -83,7 +87,7 @@ const ReceivedRequ = ({ state, address }) => {
                       <Divider orientation="horizontal" />
                     </React.Fragment>
                   ))}
-              </VStack> */}
+              </VStack>
             </Center>
           </ModalBody>
           <ModalFooter>
