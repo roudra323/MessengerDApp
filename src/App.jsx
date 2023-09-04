@@ -19,6 +19,9 @@ function App() {
   });
   const contractInstance = async () => {
     const contractAddress = import.meta.env.VITE_CONTRACT_ADDRESS;
+
+    //Test net address
+    // const contractAddress = import.meta.env.VITE_CONTRACT_LOCAL_ADDRESS;
     const contractABI = abi.abi;
     try {
       const { ethereum } = window;

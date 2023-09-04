@@ -26,7 +26,8 @@ const CreateAcc = ({ state }) => {
   const [name, setName] = useState("");
   const userRegister = async () => {
     try {
-      await contract.createAcc(name); // Pass the name to the function
+      const tx = await contract.createAcc(name);
+      console.log(tx); // Pass the name to the function
       onClose(); // Close the modal after successful registration
     } catch (error) {
       console.error("Error registering user:", error);

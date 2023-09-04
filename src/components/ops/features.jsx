@@ -4,6 +4,7 @@ import Profile from "../profile/Profile";
 import { useNavigate } from "react-router-dom";
 import Friends from "./Friends";
 import FindFriends from "./FindFriends";
+import ReceivedRequ from "./ReceivedRequ";
 
 function Features({ state, address }) {
   const navigate = useNavigate();
@@ -26,11 +27,7 @@ function Features({ state, address }) {
         <Friends />
         <FindFriends state={state} address={address} />
       </Stack>
-      <Button className="button">
-        <Text pl="10px" color="white" fontSize="xl" fontWeight="extrabold">
-          Received Requests
-        </Text>
-      </Button>
+      <ReceivedRequ state={state} address={address} />
     </VStack>
   );
 }
