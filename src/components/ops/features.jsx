@@ -1,10 +1,11 @@
-import { Button, Text, Stack, VStack } from "@chakra-ui/react";
+import { Button, Text, Stack, VStack, HStack } from "@chakra-ui/react";
 import React from "react";
 import Profile from "../profile/Profile";
 import { useNavigate } from "react-router-dom";
 import Friends from "./Friends";
 import FindFriends from "./FindFriends";
 import ReceivedRequ from "./ReceivedRequ";
+import SentRequest from "./sentRequest";
 
 function Features({ state, address }) {
   const navigate = useNavigate();
@@ -24,10 +25,13 @@ function Features({ state, address }) {
             Chat
           </Text>
         </Button>
-        <Friends />
+        <Friends state={state} />
         <FindFriends state={state} address={address} />
       </Stack>
-      <ReceivedRequ state={state} address={address} />
+      <HStack>
+        <ReceivedRequ state={state} address={address} />
+        <SentRequest state={state} address={address} />
+      </HStack>
     </VStack>
   );
 }

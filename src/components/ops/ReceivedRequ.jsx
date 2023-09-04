@@ -16,8 +16,10 @@ import {
   VStack,
   Flex,
   Divider,
+  Spinner,
 } from "@chakra-ui/react";
 import { useDisclosure } from "@chakra-ui/react";
+import { useWaitForTransaction } from "wagmi";
 
 const ReceivedRequ = ({ state, address }) => {
   const { contract } = state;
@@ -25,6 +27,8 @@ const ReceivedRequ = ({ state, address }) => {
   const initialRef = React.useRef(null);
   const finalRef = React.useRef(null);
   const [requests, setRequests] = React.useState([]);
+  const [tx, setTx] = React.useState("");
+  const { isLoading, isSuccess } = useWaitForTransaction({ hash: tx.hash });
 
   const receivedRequ = async () => {
     const requList = await contract.getAllReceivedRequest();
@@ -33,12 +37,18 @@ const ReceivedRequ = ({ state, address }) => {
   };
 
   const accptRequ = async (friend) => {
-    await contract.acceptRequest(friend);
+    try {
+      const tx = await contract.acceptRequest(friend);
+      console.log("tx", tx);
+      setTx(tx);
+    } catch (err) {
+      console.log("Got error in accepting request", err);
+    }
   };
 
   React.useEffect(() => {
     receivedRequ();
-  }, [contract, address]);
+  }, [contract, address, isLoading, isSuccess]);
 
   return (
     <div>
@@ -74,13 +84,42 @@ const ReceivedRequ = ({ state, address }) => {
                           <VStack>
                             <Text>{friend[0]}</Text>
 
-                            <Button
+                            {/* <Button
                               className="button"
                               color="white"
-                              onClick={() => accptRequ(friend[0])}
+                              onClick={() => {
+                                // Show the spinner when the "Accept" button is clicked
+                                accptRequ(friend[0]);
+                              }}
                             >
                               Accept
-                            </Button>
+                            </Button> */}
+
+                            {isLoading ? (
+                              <Button className="button" color="white">
+                                <Spinner
+                                  thickness="4px"
+                                  speed="0.65s"
+                                  emptyColor="gray.200"
+                                  color="blue.500"
+                                  size="xl"
+                                />
+                              </Button>
+                            ) : isSuccess ? (
+                              <Button className="button" color="white">
+                                Accepted
+                              </Button>
+                            ) : (
+                              <Button
+                                className="button"
+                                color="white"
+                                onClick={() => {
+                                  accptRequ(friend[0]);
+                                }}
+                              >
+                                Accept
+                              </Button>
+                            )}
                           </VStack>
                         </Flex>
                       </HStack>

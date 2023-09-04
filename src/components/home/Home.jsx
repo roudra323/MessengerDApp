@@ -62,7 +62,7 @@ function Home({ state }) {
               {isRegistered ? (
                 <Features state={state} address={address} />
               ) : (
-                <CreateAcc state={state} />
+                <CreateAcc state={state} func={checkRegistration} />
               )}
             </VStack>
           ) : (

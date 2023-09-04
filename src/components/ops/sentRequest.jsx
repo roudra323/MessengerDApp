@@ -19,31 +19,27 @@ import {
 } from "@chakra-ui/react";
 import { useDisclosure } from "@chakra-ui/react";
 
-const Friends = ({ state }) => {
+const SentRequest = ({ state, address }) => {
   const { contract } = state;
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = React.useRef(null);
   const finalRef = React.useRef(null);
-  const [friends, setFriends] = React.useState([]);
+  const [requests, setRequests] = React.useState([]);
 
-  const allFriends = async () => {
-    try {
-      const friendList = await contract.getAllFriends();
-      setFriends(friendList);
-    } catch (error) {
-      console.error("Error registering user:", error);
-    }
+  const sentRequest = async () => {
+    const requList = await contract.getAllSentRequest();
+    return setRequests(requList);
   };
 
   React.useEffect(() => {
-    allFriends();
-  }, []);
+    sentRequest();
+  }, [contract, address]);
 
   return (
     <div>
       <Button className="button" onClick={onOpen}>
         <Text pl="10px" color="white" fontSize="xl" fontWeight="extrabold">
-          Friends
+          Sent Requests
         </Text>
       </Button>
       <Modal
@@ -54,25 +50,30 @@ const Friends = ({ state }) => {
       >
         <ModalOverlay />
         <ModalContent color="white" bg="gray.800">
-          <ModalHeader>Friends Information</ModalHeader>
+          <ModalHeader>Sent Requests</ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={6}>
             <Center>
               <VStack>
-                {friends.map((friend, index) => (
-                  <React.Fragment key={index}>
-                    <HStack key={index} pt={"10px"}>
-                      <Image boxSize="50px" src="avatar.png" alt={friend[0]} />
-                      <Flex>
-                        <VStack>
-                          <Text>{friend[1]}</Text>
-                          <Text>{friend[0]}</Text>
-                        </VStack>
-                      </Flex>
-                    </HStack>
-                    <Divider orientation="horizontal" />
-                  </React.Fragment>
-                ))}
+                {requests
+                  .filter((friend) => friend[3] == true)
+                  .map((friend, index) => (
+                    <React.Fragment key={index}>
+                      <HStack key={index} pt={"10px"}>
+                        <Image
+                          boxSize="50px"
+                          src="avatar.png"
+                          alt={friend[0]}
+                        />
+                        <Flex>
+                          <VStack>
+                            <Text>{friend[1]}</Text>
+                          </VStack>
+                        </Flex>
+                      </HStack>
+                      <Divider orientation="horizontal" />
+                    </React.Fragment>
+                  ))}
               </VStack>
             </Center>
           </ModalBody>
@@ -85,4 +86,4 @@ const Friends = ({ state }) => {
   );
 };
 
-export default Friends;
+export default SentRequest;

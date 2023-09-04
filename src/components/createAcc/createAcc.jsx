@@ -14,21 +14,26 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { useDisclosure } from "@chakra-ui/react";
-import { useAccount } from "wagmi";
-
-const CreateAcc = ({ state }) => {
-  const { contract } = state;
+import { useAccount, useWaitForTransaction } from "wagmi";
+const CreateAcc = (props) => {
+  const { contract } = props.state;
   const { address, isConnected, isDisconnected } = useAccount();
   const { isOpen, onOpen, onClose } = useDisclosure();
-
+  const [tx, setTx] = React.useState("");
+  const { isLoading, isSuccess } = useWaitForTransaction({ hash: tx.hash });
   const initialRef = React.useRef(null);
   const finalRef = React.useRef(null);
   const [name, setName] = useState("");
+
   const userRegister = async () => {
     try {
       const tx = await contract.createAcc(name);
       console.log(tx); // Pass the name to the function
-      onClose(); // Close the modal after successful registration
+      const success = await isSuccess();
+      if (success) {
+        await props.func(); // Call the async function passed as a prop
+        onClose(); // Close the modal after successful registration
+      }
     } catch (error) {
       console.error("Error registering user:", error);
     }
