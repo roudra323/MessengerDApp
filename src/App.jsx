@@ -55,7 +55,10 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<Home state={state} />} />
-        <Route path="/chat" element={<Chat state={state} />} />
+        <Route
+          path="/chat/:friendId"
+          element={<Chat state={state} receiAddr={address} />}
+        />
       </Routes>
       {console.log("This is from the App.jsx", state)}
       <Footer />

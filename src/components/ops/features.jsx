@@ -20,11 +20,11 @@ function Features({ state, address }) {
         pb={"10px"}
       >
         <Profile state={state} address={address} />
-        <Button className="button" onClick={() => navigate("/chat")}>
+        {/* <Button className="button" onClick={() => navigate("/chat")}>
           <Text pl="10px" color="white" fontSize="xl" fontWeight="extrabold">
             Chat
           </Text>
-        </Button>
+        </Button> */}
         <Friends state={state} />
         <FindFriends state={state} address={address} />
       </Stack>

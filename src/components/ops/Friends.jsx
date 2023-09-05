@@ -18,8 +18,10 @@ import {
   Divider,
 } from "@chakra-ui/react";
 import { useDisclosure } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 
 const Friends = ({ state }) => {
+  const navigate = useNavigate();
   const { contract } = state;
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = React.useRef(null);
@@ -33,6 +35,10 @@ const Friends = ({ state }) => {
     } catch (error) {
       console.error("Error registering user:", error);
     }
+  };
+  const handleChatClick = (friendId) => {
+    // Redirect to the chat page with the friend's identifier
+    navigate(`/chat/${friendId}`);
   };
 
   React.useEffect(() => {
@@ -67,6 +73,13 @@ const Friends = ({ state }) => {
                         <VStack>
                           <Text>{friend[1]}</Text>
                           <Text>{friend[0]}</Text>
+                          <Button
+                            className="button"
+                            color="white"
+                            onClick={() => handleChatClick(friend[0])}
+                          >
+                            Chat
+                          </Button>
                         </VStack>
                       </Flex>
                     </HStack>

@@ -1,15 +1,17 @@
 import React from "react";
-import Sidebar from "../Sidebar/Sidebar";
 import { Divider, Center, Text, Box, Flex, Spacer } from "@chakra-ui/react";
 import ChatBox from "./ChatBox";
+import ChatList from "./ChatList";
+import { useParams } from "react-router-dom";
 
-function Chat() {
+function Chat({ state, receiAddr }) {
+  const { friendId } = useParams();
+  console.log(friendId);
   return (
     <div className="page-container">
       <div className="content-container">
         <Flex>
-          <Sidebar />
-          <ChatBox />
+          <ChatBox state={state} friendaddr={friendId} receiAddr={receiAddr} />
         </Flex>
       </div>
     </div>

@@ -20,9 +20,9 @@ import {
   Stack,
 } from "@chakra-ui/react";
 import { EmailIcon } from "@chakra-ui/icons";
-import "./Sidebar.css";
+import "./Chat.css";
 
-const Sidebar = () => {
+const ChatList = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const firstField = React.useRef();
 
@@ -66,4 +66,4 @@ const Sidebar = () => {
   );
 };
 
-export default Sidebar;
+export default ChatList;
