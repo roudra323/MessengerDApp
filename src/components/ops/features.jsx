@@ -28,10 +28,10 @@ function Features({ state, address }) {
         <Friends state={state} />
         <FindFriends state={state} address={address} />
       </Stack>
-      <HStack>
+      <Stack direction={["column", "row"]}>
         <ReceivedRequ state={state} address={address} />
         <SentRequest state={state} address={address} />
-      </HStack>
+      </Stack>
     </VStack>
   );
 }
