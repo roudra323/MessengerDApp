@@ -31,6 +31,11 @@ const SentRequest = ({ state, address }) => {
     return setRequests(requList);
   };
 
+  const isAc = async (addr) => {
+    const isAcc = await contract.checkIfAccepted(addr);
+    return isAcc;
+  };
+
   React.useEffect(() => {
     sentRequest();
   }, [contract, address]);
@@ -56,7 +61,9 @@ const SentRequest = ({ state, address }) => {
             <Center>
               <VStack>
                 {requests
-                  .filter((friend) => friend[3] == true)
+                  .filter((friend) => {
+                    isAc(friend[1]) == true && friend[3] == false;
+                  })
                   .map((friend, index) => (
                     <React.Fragment key={index}>
                       <HStack key={index} pt={"10px"}>

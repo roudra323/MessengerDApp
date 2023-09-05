@@ -16,10 +16,25 @@ import {
 } from "@chakra-ui/react";
 import { useDisclosure } from "@chakra-ui/react";
 import "./Profile.css";
-const Profile = ({ address }) => {
+const Profile = ({ state, address }) => {
+  const { contract } = state;
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = React.useRef(null);
   const finalRef = React.useRef(null);
+  const [friends, setFriends] = React.useState([]);
+
+  const allFriends = async () => {
+    try {
+      const friendList = await contract.getAllFriends();
+      setFriends(friendList);
+    } catch (error) {
+      console.error("Error registering user:", error);
+    }
+  };
+
+  React.useEffect(() => {
+    allFriends();
+  }, [contract]);
   return (
     <div>
       <Button className="button" onClick={onOpen}>
@@ -42,7 +57,7 @@ const Profile = ({ address }) => {
               <VStack>
                 <Image boxSize="50px" src="avatar.png" alt="Dan Abramov" />
                 <Text>{address}</Text>
-                <Text>Total Friends:</Text>
+                <Text>Total Friends : {friends.length}</Text>
               </VStack>
             </Center>
           </ModalBody>

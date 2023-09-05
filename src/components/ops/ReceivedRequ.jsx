@@ -36,6 +36,11 @@ const ReceivedRequ = ({ state, address }) => {
     return setRequests(requList);
   };
 
+  const isAc = async (addr) => {
+    const isAcc = await contract.checkIfAccepted(addr);
+    return isAcc;
+  };
+
   const accptRequ = async (friend) => {
     try {
       const tx = await contract.acceptRequest(friend);
@@ -71,7 +76,9 @@ const ReceivedRequ = ({ state, address }) => {
             <Center>
               <VStack>
                 {requests
-                  .filter((friend) => friend[2] == false)
+                  .filter((friend) => {
+                    isAc(friend[0]) == true && friend[3] == false;
+                  })
                   .map((friend, index) => (
                     <React.Fragment key={index}>
                       <HStack key={index} pt={"10px"}>

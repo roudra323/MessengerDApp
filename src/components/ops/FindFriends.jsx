@@ -37,9 +37,14 @@ const FriendFriends = ({ state, address }) => {
     console.log(friend);
   };
 
+  const alreadyFriends = async (owner, addr) => {
+    const isAcc = await contract.checkAlreadyFriends(owner, addr);
+    return isAcc;
+  };
+
   React.useEffect(() => {
     findFriends();
-  }, []); // Call findFriends when the component mounts
+  }, [contract]); // Call findFriends when the component mounts
 
   return (
     <div>
@@ -62,6 +67,10 @@ const FriendFriends = ({ state, address }) => {
             <Center>
               <VStack>
                 {friends
+                  .filter((friend) => {
+                    alreadyFriends(address, friend[0]) == true &&
+                      friend[3] == false;
+                  })
                   .filter((friend) => friend[1] != address)
                   .map((friend, index) => (
                     <React.Fragment key={index}>

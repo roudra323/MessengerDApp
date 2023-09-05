@@ -37,7 +37,7 @@ const Friends = ({ state }) => {
 
   React.useEffect(() => {
     allFriends();
-  }, []);
+  }, [contract]);
 
   return (
     <div>

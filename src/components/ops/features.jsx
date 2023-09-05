@@ -19,7 +19,7 @@ function Features({ state, address }) {
         align="center"
         pb={"10px"}
       >
-        <Profile address={address} />
+        <Profile state={state} address={address} />
         <Button className="button" onClick={() => navigate("/chat")}>
           <Text pl="10px" color="white" fontSize="xl" fontWeight="extrabold">
             Chat
