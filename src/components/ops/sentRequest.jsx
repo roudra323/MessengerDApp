@@ -28,11 +28,25 @@ const SentRequest = ({ state, address }) => {
 
   const sentRequest = async () => {
     const requList = await contract.getAllSentRequest();
-    return setRequests(requList);
+
+    const filteredRequests = await Promise.all(
+      requList.map(async (friend) => {
+        const isAccepted = await isAc(friend[1]);
+        return { friend, isAccepted };
+      })
+    );
+
+    const unacceptedRequests = filteredRequests.filter(
+      (friend) => !friend.isAccepted
+    );
+    console.log("Unaccepted requests =", unacceptedRequests);
+
+    setRequests(unacceptedRequests);
   };
 
   const isAc = async (addr) => {
     const isAcc = await contract.checkIfAccepted(addr);
+    console.log("Is accepted request? =", addr, isAcc);
     return isAcc;
   };
 
@@ -60,27 +74,23 @@ const SentRequest = ({ state, address }) => {
           <ModalBody pb={6}>
             <Center>
               <VStack>
-                {requests
-                  .filter((friend) => {
-                    isAc(friend[1]) == true && friend[3] == false;
-                  })
-                  .map((friend, index) => (
-                    <React.Fragment key={index}>
-                      <HStack key={index} pt={"10px"}>
-                        <Image
-                          boxSize="50px"
-                          src="avatar.png"
-                          alt={friend[0]}
-                        />
-                        <Flex>
-                          <VStack>
-                            <Text>{friend[1]}</Text>
-                          </VStack>
-                        </Flex>
-                      </HStack>
-                      <Divider orientation="horizontal" />
-                    </React.Fragment>
-                  ))}
+                {requests.map((friend, index) => (
+                  <React.Fragment key={index}>
+                    <HStack key={index} pt={"10px"}>
+                      <Image
+                        boxSize="50px"
+                        src="avatar.png"
+                        alt={friend.friend[1]}
+                      />
+                      <Flex>
+                        <VStack>
+                          <Text>{friend.friend[1]}</Text>
+                        </VStack>
+                      </Flex>
+                    </HStack>
+                    <Divider orientation="horizontal" />
+                  </React.Fragment>
+                ))}
               </VStack>
             </Center>
           </ModalBody>

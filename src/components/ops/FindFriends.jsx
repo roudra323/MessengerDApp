@@ -16,6 +16,7 @@ import {
   VStack,
   Flex,
   Divider,
+  Spinner,
 } from "@chakra-ui/react";
 import { useDisclosure } from "@chakra-ui/react";
 import { useWaitForTransaction } from "wagmi";

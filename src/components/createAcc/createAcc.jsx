@@ -29,6 +29,7 @@ const CreateAcc = (props) => {
     try {
       const tx = await contract.createAcc(name);
       console.log(tx); // Pass the name to the function
+      setTx(tx);
     } catch (error) {
       console.error("Error registering user:", error);
     }
