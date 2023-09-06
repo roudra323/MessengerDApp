@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Modal,
@@ -18,6 +18,7 @@ import {
   Divider,
 } from "@chakra-ui/react";
 import { useDisclosure } from "@chakra-ui/react";
+import { useWaitForTransaction } from "wagmi";
 
 const FriendFriends = ({ state, address }) => {
   const { contract } = state;
@@ -25,26 +26,42 @@ const FriendFriends = ({ state, address }) => {
   const initialRef = React.useRef(null);
   const finalRef = React.useRef(null);
   const [friends, setFriends] = React.useState([]);
+  const [tx, setTx] = React.useState("");
+  const { isLoading, isSuccess } = useWaitForTransaction({ hash: tx.hash });
+
+  const alreadyFriends = async (owner, addr) => {
+    const alreadyFriends = await contract.checkAlreadyFriends(owner, addr);
+    return alreadyFriends;
+  };
+
+  const filterFriends = async (friendsList) => {
+    const filteredFriends = [];
+    for (const friend of friendsList) {
+      const isAlreadyFriend = await alreadyFriends(address, friend[1]);
+      if (!isAlreadyFriend && friend[1] !== address) {
+        filteredFriends.push(friend);
+      }
+    }
+    return filteredFriends;
+  };
 
   const findFriends = async () => {
-    const friends = await contract.getAllUser();
-    console.log(friends);
-    setFriends(friends);
+    const friendsList = await contract.getAllUser();
+    console.log(friendsList);
+    const filteredFriends = await filterFriends(friendsList);
+    console.log("Filtered Friends:", filteredFriends);
+    setFriends(filteredFriends);
   };
 
   const sendRequest = async (friend) => {
-    await contract.sendRequest(friend);
+    const tx = await contract.sendRequest(friend);
     console.log(friend);
+    setTx(tx);
   };
 
-  const alreadyFriends = async (owner, addr) => {
-    const isAcc = await contract.checkAlreadyFriends(owner, addr);
-    return isAcc;
-  };
-
-  React.useEffect(() => {
+  useEffect(() => {
     findFriends();
-  }, [contract]); // Call findFriends when the component mounts
+  }, [contract, address]);
 
   return (
     <div>
@@ -66,24 +83,29 @@ const FriendFriends = ({ state, address }) => {
           <ModalBody pb={6}>
             <Center>
               <VStack>
-                {friends
-                  .filter((friend) => {
-                    alreadyFriends(address, friend[0]) == true &&
-                      friend[3] == false;
-                  })
-                  .filter((friend) => friend[1] != address)
-                  .map((friend, index) => (
-                    <React.Fragment key={index}>
-                      <HStack key={index} pt={"10px"}>
-                        <Image
-                          boxSize="50px"
-                          src="avatar.png"
-                          alt={friend[0]}
-                        />
-                        <Flex>
-                          <VStack>
-                            <Text>{friend[0]}</Text>
-                            <Text>{friend[1]}</Text>
+                {friends.map((friend, index) => (
+                  <React.Fragment key={index}>
+                    <HStack key={index} pt={"10px"}>
+                      <Image boxSize="50px" src="avatar.png" alt={friend[0]} />
+                      <Flex>
+                        <VStack>
+                          <Text>{friend[0]}</Text>
+                          <Text>{friend[1]}</Text>
+                          {isLoading ? (
+                            <Button className="button" color="white">
+                              <Spinner
+                                thickness="4px"
+                                speed="0.65s"
+                                emptyColor="gray.200"
+                                color="blue.500"
+                                size="sm"
+                              />
+                            </Button>
+                          ) : isSuccess ? (
+                            <Button className="button" color="white">
+                              Sent Request
+                            </Button>
+                          ) : (
                             <Button
                               className="button"
                               color="white"
@@ -91,12 +113,13 @@ const FriendFriends = ({ state, address }) => {
                             >
                               Add
                             </Button>
-                          </VStack>
-                        </Flex>
-                      </HStack>
-                      <Divider orientation="horizontal" />
-                    </React.Fragment>
-                  ))}
+                          )}
+                        </VStack>
+                      </Flex>
+                    </HStack>
+                    <Divider orientation="horizontal" />
+                  </React.Fragment>
+                ))}
               </VStack>
             </Center>
           </ModalBody>

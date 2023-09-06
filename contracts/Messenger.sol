@@ -2,6 +2,7 @@
 pragma solidity ^0.8.10;
 
 /// @title Messenger: A smart contract for messaging and friend requests
+/// test 1
 contract Messenger {
     struct User {
         string name;
@@ -69,7 +70,7 @@ contract Messenger {
 
     /// @dev Checks if two addresses are already friends.
     function checkAlreadyFriends(address _user, address _friendAddr)
-        internal
+        public
         view
         returns (bool)
     {
@@ -209,12 +210,12 @@ contract Messenger {
     /// @dev Reads all the messages between the caller and a friend.
     /// @param friendAddr The address of the friend whose messages are being read.
     /// @return An array of messages exchanged between the caller and the friend.
-    function readMessage(address friendAddr)
+    function readMessage(address senderAddr, address friendAddr)
         external
         view
         returns (Message[] memory)
     {
-        bytes32 chatCode = _getChatCode(msg.sender, friendAddr);
+        bytes32 chatCode = _getChatCode(senderAddr, friendAddr);
         return allMessages[chatCode];
     }
 

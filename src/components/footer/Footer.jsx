@@ -14,7 +14,12 @@ import "./Footer";
 const Logo = () => {
   return (
     <Flex>
-      <img src="logo-bg-rmv.png" alt="logo" width="100px" height="100px" />
+      <img
+        src="../../../public/logo-bg-rmv.png"
+        alt="logo"
+        width="100px"
+        height="100px"
+      />
       <Text fontSize="4xl" pt="20px">
         ChainChat
       </Text>

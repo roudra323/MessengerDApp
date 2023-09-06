@@ -40,10 +40,7 @@ const ChatBox = ({ state, receiAddr, friendId }) => {
   const sendMessage = async () => {
     if (newMessage.trim() === "") return;
 
-    await contract.sendMessage(
-      "0xCCa8F0cD5b870DD7De3942F06B4b72c71504cfBC",
-      newMessage
-    );
+    await contract.sendMessage(friendId, newMessage);
     // setMessages([...messages, { text: newMessage, sender: "user" }]); // here implement the logic to send message to the node
     setNewMessage("");
   };
@@ -55,7 +52,7 @@ const ChatBox = ({ state, receiAddr, friendId }) => {
   };
 
   const readMSG = async () => {
-    const allMsg = await contract.readMessage(friendId);
+    const allMsg = await contract.readMessage(receiAddr, friendId);
     setMessages(allMsg);
     console.log(allMsg);
   };

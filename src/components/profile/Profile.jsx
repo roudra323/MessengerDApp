@@ -22,6 +22,7 @@ const Profile = ({ state, address }) => {
   const initialRef = React.useRef(null);
   const finalRef = React.useRef(null);
   const [friends, setFriends] = React.useState([]);
+  const [name, setName] = React.useState("");
 
   const allFriends = async () => {
     try {
@@ -32,8 +33,18 @@ const Profile = ({ state, address }) => {
     }
   };
 
+  const getName = async () => {
+    try {
+      const name = await contract.userList(address);
+      setName(name);
+    } catch (error) {
+      console.error("Error registering user:", error);
+    }
+  };
+
   React.useEffect(() => {
     allFriends();
+    getName();
   }, [contract]);
   return (
     <div>
@@ -56,6 +67,7 @@ const Profile = ({ state, address }) => {
             <Center>
               <VStack>
                 <Image boxSize="50px" src="avatar.png" alt="Dan Abramov" />
+                <Text>{name}</Text>
                 <Text>{address}</Text>
                 <Text>Total Friends : {friends.length}</Text>
               </VStack>

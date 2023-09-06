@@ -29,11 +29,6 @@ const CreateAcc = (props) => {
     try {
       const tx = await contract.createAcc(name);
       console.log(tx); // Pass the name to the function
-      const success = await isSuccess();
-      if (success) {
-        await props.func(); // Call the async function passed as a prop
-        onClose(); // Close the modal after successful registration
-      }
     } catch (error) {
       console.error("Error registering user:", error);
     }
@@ -80,14 +75,38 @@ const CreateAcc = (props) => {
           </ModalBody>
 
           <ModalFooter>
-            <Button
+            {isLoading ? (
+              <Button className="button" color="white">
+                <Spinner
+                  thickness="4px"
+                  speed="0.65s"
+                  emptyColor="gray.200"
+                  color="blue.500"
+                  size="sm"
+                />
+              </Button>
+            ) : isSuccess ? (
+              <Button className="button" color="white">
+                Created
+              </Button>
+            ) : (
+              <Button
+                className="button"
+                color="white"
+                onClick={userRegister}
+                mr={3}
+              >
+                Create
+              </Button>
+            )}
+            {/* <Button
               className="button"
               colorScheme="blue"
               mr={3}
               onClick={userRegister}
             >
               Create
-            </Button>
+            </Button> */}
             <Button onClick={onClose}>Cancel</Button>
           </ModalFooter>
         </ModalContent>
