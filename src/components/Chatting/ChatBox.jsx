@@ -92,6 +92,7 @@ const ChatBox = ({ state, receiAddr, friendaddr }) => {
         overflowY="auto"
         height="70vh"
         pr="50px"
+        pl="50px"
       >
         {messages.map((message, index) => (
           <Message key={index} text={message.msge} sender={message.sender} />
