@@ -15,7 +15,7 @@ const Logo = () => {
   return (
     <Flex>
       <img
-        src="../../../public/logo-bg-rmv.png"
+        src="logo-bg-rmv.png"
         alt="logo"
         width="100px"
         height="100px"

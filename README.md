@@ -67,6 +67,6 @@ We would like to thank the Ethereum and blockchain developer community for their
 
 ## Contact
 
-For questions or feedback, please contact us at [contact@chainchat.com](mailto:contact@chainchat.com).
+For questions or feedback, please contact us at [asirroudra@gmail.com](mailto:asirroudra@gmail.com).
 
-Visit the [ChainChat website](https://www.chainchat.com) for more information and updates.
+Visit the [ChainChat website](https://chainchat.netlify.app/) for more information and updates.

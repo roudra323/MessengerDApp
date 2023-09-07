@@ -16,7 +16,7 @@ const Navbar = () => {
         <Image
           className="logo"
           boxSize="60px"
-          src="../../../public/logo-bg-rmv.png"
+          src="logo-bg-rmv.png"
           alt="ChainChat"
           onClick={() => navigate("/")}
           cursor="pointer"
