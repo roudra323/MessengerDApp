@@ -45,7 +45,7 @@ To get started with ChainChat, follow these steps:
 
 2. Install the necessary dependencies using `npm install`.
 
-3. Deploy the smart contract to the Ethereum blockchain using Hardhat.
+3. Deploy the smart contract to the Ethereum blockchain using Hardhat. Follow the [Steps](https://github.com/roudra323/DApp-Boilerplate) if you stuck. 
 
 4. Start the front-end application using `npm start`.
 
