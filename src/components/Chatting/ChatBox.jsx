@@ -7,10 +7,11 @@ import {
   Divider,
   VStack,
   Center,
+  Spinner,
 } from "@chakra-ui/react";
 import { ArrowForwardIcon } from "@chakra-ui/icons";
 import "./Chat.css";
-import { useAccount } from "wagmi";
+import { useAccount, useWaitForTransaction } from "wagmi";
 
 const Message = ({ text, sender }) => {
   const { address, isConnected, isDisconnected } = useAccount();
@@ -30,17 +31,24 @@ const Message = ({ text, sender }) => {
   );
 };
 
-const ChatBox = ({ state, receiAddr, friendId }) => {
+const ChatBox = ({ state, receiAddr, friendaddr }) => {
+  console.log("receiver address", receiAddr, typeof receiAddr);
+  console.log("Friend address", friendaddr, typeof friendaddr);
   const { isConnected, isDisconnected } = useAccount();
   const { contract } = state;
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const chatBoxRef = useRef(null); // Create a ref for the chat box container
 
+  const [tx, setTx] = useState("");
+  const { isLoading, isSuccess } = useWaitForTransaction({ hash: tx.hash });
+
   const sendMessage = async () => {
     if (newMessage.trim() === "") return;
 
-    await contract.sendMessage(friendId, newMessage);
+    const tx = await contract.sendMessage(friendaddr, newMessage);
+    setTx(tx);
+
     // setMessages([...messages, { text: newMessage, sender: "user" }]); // here implement the logic to send message to the node
     setNewMessage("");
   };
@@ -52,7 +60,7 @@ const ChatBox = ({ state, receiAddr, friendId }) => {
   };
 
   const readMSG = async () => {
-    const allMsg = await contract.readMessage(receiAddr, friendId);
+    const allMsg = await contract.readMessage(receiAddr, friendaddr);
     setMessages(allMsg);
     console.log(allMsg);
   };
@@ -64,9 +72,10 @@ const ChatBox = ({ state, receiAddr, friendId }) => {
     contract,
     newMessage,
     receiAddr,
-    friendId,
+    friendaddr,
     isConnected,
     isDisconnected,
+    isSuccess,
   ]);
 
   // Scroll to the bottom when messages are updated
@@ -97,12 +106,22 @@ const ChatBox = ({ state, receiAddr, friendId }) => {
           onKeyDown={handleKeyDown}
           placeholder="Type a message..."
         />
-        <IconButton
-          icon={<ArrowForwardIcon />}
-          colorScheme="teal"
-          ml="2"
-          onClick={sendMessage}
-        />
+
+        {isLoading ? (
+          <IconButton
+            icon={<Spinner />}
+            colorScheme="teal"
+            ml="2"
+            onClick={sendMessage}
+          />
+        ) : (
+          <IconButton
+            icon={<ArrowForwardIcon />}
+            colorScheme="teal"
+            ml="2"
+            onClick={sendMessage}
+          />
+        )}
       </Flex>
     </Box>
   );
